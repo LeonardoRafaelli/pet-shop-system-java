@@ -10,8 +10,8 @@ public class Dog extends Animal {
 
     }
 
-    public Dog(String name, String likesToPlay, String furColor, int barksDistance, int strength, String eyeColor) {
-        super(name, likesToPlay, furColor);
+    public Dog(int codigo, String name, String likesToPlay, String furColor, int barksDistance, int strength, String eyeColor) {
+        super(codigo, name, likesToPlay, furColor);
         this.barksDistance = barksDistance;
         this.strength = strength;
         this.eyeColor = eyeColor;

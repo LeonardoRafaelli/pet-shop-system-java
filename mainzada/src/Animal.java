@@ -1,15 +1,20 @@
 public class Animal {
     private String name, likesToPlay, furColor;
-
+    private int codigo;
     public Animal(){
 
     }
 
-    public Animal(String name, String likesToPlay, String furColor) {
+    public Animal(int codigo, String name, String likesToPlay, String furColor) {
+        this.codigo = codigo;
         this.name = name;
         this.likesToPlay = likesToPlay;
         this.furColor = furColor;
     }
+
+    public int getCodigo() {return codigo;};
+
+    public void setCodigo(int codigo){this.codigo = codigo;};
 
     public String getName() {
         return name;
@@ -37,10 +42,11 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "Animals{" +
+        return "Animal{" +
                 "name='" + name + '\'' +
                 ", likesToPlay='" + likesToPlay + '\'' +
                 ", furColor='" + furColor + '\'' +
+                ", codigo=" + codigo +
                 '}';
     }
 }

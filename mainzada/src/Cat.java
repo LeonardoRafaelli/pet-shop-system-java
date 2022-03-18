@@ -11,8 +11,8 @@ public class Cat extends Animal {
 
     }
 
-    public Cat(String name, String likesToPlay, String furColor, int hoursSleeping, boolean haveNail, String foodLikes) {
-        super(name, likesToPlay, furColor);
+    public Cat(int codigo, String name, String likesToPlay, String furColor, int hoursSleeping, boolean haveNail, String foodLikes) {
+        super(codigo, name, likesToPlay, furColor);
         this.hoursSleeping = hoursSleeping;
         this.haveNail = haveNail;
         this.foodLikes = foodLikes;

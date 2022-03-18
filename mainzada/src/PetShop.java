@@ -3,12 +3,12 @@ import java.util.Scanner;
 public class PetShop {
     static  Scanner sc = new Scanner(System.in);
 
-    private static void main(String[] args) {
+    public static void main(String[] args) {
         principalMenu();
     }
 
     private static void principalMenu(){
-        System.out.print("--- MENU PRINCIPAL ---" +
+        System.out.print("\n--- MENU PRINCIPAL ---" +
                 "\n1 - Register animal;" +
                 "\n2 - Edit animal;" +
                 "\n3 - List animals;" +
@@ -19,12 +19,15 @@ public class PetShop {
         switch (option){
             case 1 -> {
                 registerAnimal();
+                principalMenu();
             }
             case 2 -> {
-//                editAnimal();
+                editAnimal();
+                principalMenu();
             }
             case 3 -> {
                 listAnimal();
+                principalMenu();
             }
             case 4 -> {
 //                removerAnimal();
@@ -38,6 +41,68 @@ public class PetShop {
             }
         }
     }
+    //Edits
+    private static void editAnimal(){
+        int animalChosen = getType("--- Edit ---");
+        int editChoice = 1;
+        do {
+            if (editChoice != 1 && editChoice != 2){
+                System.out.println(editChoice + ", Não é uma opção válida!");
+            }
+            System.out.println("\n1 - Edit all attributes;" +
+                    "\n2 - Edit 1 attibute." +
+                    "\nType here: ");
+            editChoice = sc.nextInt();
+        } while (editChoice != 1 && editChoice != 2);
+
+        switch (animalChosen){
+            case 1 -> {
+                switch (editChoice){
+                    case 1->{editAllDog();}
+//                    case 2->{edit1Dog();}
+                }
+            }
+        };
+    };
+
+    private static void editAllDog(){
+        System.out.print("\nInsert animal's code: ");
+        int animalCode = sc.nextInt();
+        int animalIndex = getAnimalIndex(1, animalCode);
+
+        Animal animal = collectAnimalData();
+        Dog tDog = collectDogsData();
+        Dog dog = new Dog(animal.getCodigo(), animal.getName(), animal.getLikesToPlay(), animal.getFurColor(), tDog.getBarksDistance(), tDog.getStrength(), tDog.getEyeColor());
+        Dog.listDogs.add(dog);
+
+    }
+
+    private static int getAnimalIndex(int animalType, int animalCode){
+        switch (animalType){
+            case 1 -> {
+                for(int i = 0; i < Dog.listDogs.size(); i++){
+                    if(Dog.listDogs.get(i).getCodigo() == animalCode){
+                        return i;
+                    }
+                }
+            }
+            case 2 -> {
+                Cat.listCats.forEach(cat -> {
+//                    if(cat.getCodigo() == animalCode){
+                    System.out.println(cat.getCodigo());
+                    System.out.println(Cat.listCats.indexOf(cat));
+//                    }
+                });
+                for(int i = 0; i < Cat.listCats.size(); i++){
+                    if(Cat.listCats.get(i).getCodigo() == animalCode){
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
     // Registers
     private static void registerAnimal(){
         Animal animal = collectAnimalData();
@@ -45,12 +110,12 @@ public class PetShop {
         switch (animalChosen){
             case 1 -> {
                 Dog tDog = collectDogsData();
-                Dog dog = new Dog(animal.getName(), animal.getLikesToPlay(), animal.getFurColor(), tDog.getBarksDistance(), tDog.getStrength(), tDog.getEyeColor());
+                Dog dog = new Dog(animal.getCodigo(), animal.getName(), animal.getLikesToPlay(), animal.getFurColor(), tDog.getBarksDistance(), tDog.getStrength(), tDog.getEyeColor());
                 Dog.listDogs.add(dog);
             }
             case 2 -> {
                 Cat tCat = collectCatsData();
-                Cat cat = new Cat(animal.getName(), animal.getLikesToPlay(), animal.getFurColor(), tCat.getHoursSleeping(), tCat.isHaveNail(), tCat.getFoodLikes());
+                Cat cat = new Cat(animal.getCodigo(), animal.getName(), animal.getLikesToPlay(), animal.getFurColor(), tCat.getHoursSleeping(), tCat.isHaveNail(), tCat.getFoodLikes());
                 Cat.listCats.add(cat);
             }
         }
@@ -59,13 +124,23 @@ public class PetShop {
     // List animals
     private static void listAnimal(){
         int animalChosen = getType("--- List ---");
+        switch (animalChosen){
+            case 1-> {
+                Dog.listDogs.forEach(dog -> { System.out.println(dog.toString()); });
+            }
+            case 2-> {
+                Cat.listCats.forEach(cat -> { System.out.println(cat.toString()); });
+            }
+        }
     }
 
     //Data collects
     private static Animal collectAnimalData(){
         Animal animal = new Animal();
         System.out.print("Insert the following datas: " +
-                "\nAnimal name: ");
+                "\nAnimal ID: ");
+        animal.setCodigo(sc.nextInt());
+        System.out.print("Name: ");
         animal.setName(sc.next());
         System.out.print("Likes to play with: ");
         animal.setLikesToPlay(sc.next());
@@ -117,7 +192,8 @@ public class PetShop {
             }
             System.out.print("\n" + title +
                     "\n1 - Dog;" +
-                    "\n2 - Cat");
+                    "\n2 - Cat." +
+                    "\nType here: ");
             option = sc.nextInt();
             i++;
         } while(option != 1 && option != 2);
