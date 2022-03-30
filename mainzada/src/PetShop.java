@@ -4,6 +4,7 @@ public class PetShop {
     static  Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         principalMenu();
     }
 
@@ -79,37 +80,17 @@ public class PetShop {
             editChoice = sc.nextInt();
         } while (editChoice != 1 && editChoice != 2);
 
-        switch (animalChosen){
-            case 1 -> {
-                switch (editChoice){
-                    case 1->{ editAllAnimal(1);}
-                    case 2->{ edit1Atb(1);}
-                }
-            }
-            case 2 -> {
-                switch (editChoice){
-                    case 1 -> { editAllAnimal(2);}
-                    case 2->{ edit1Atb(2);}
-                }
-            }
-        };
+        switch (editChoice){
+            case 1->{ editAllAnimal(animalChosen);}
+            case 2->{ edit1Atb(animalChosen);}
+        }
+
     };
 
     // Edit all attributes
     private static void editAllAnimal(int type){
         int animalIndex = getAnimalIndex(type);
-
-        Animal animal = collectAnimalData();
-        switch (type){
-            case 1 -> {
-                Dog dog = collectDogsData(animal);
-                Dog.listDogs.set(animalIndex, dog);
-            }
-            case 2 -> {
-                Cat cat = collectCatsData(animal);
-                Cat.listCats.set(animalIndex, cat);
-            }
-        }
+        Animal.listaAnimais.set(animalIndex, collectAnimalData(type));
     }
 
     // Edit 1 attibute
@@ -117,62 +98,29 @@ public class PetShop {
         int editChoice = editChoice(type);
         int animalIndex = getAnimalIndex(type);
         System.out.print("Type the new data: ");
-        switch (type){
-            case 1 -> {
-                switch (editChoice) {
-                    case 1 -> {
-                        Dog.listDogs.get(animalIndex).setName(sc.next());
-                    }
-                    case 2 -> {
-                        Dog.listDogs.get(animalIndex).setLikesToPlay(sc.next());
-                    }
-                    case 3 -> {
-                        Dog.listDogs.get(animalIndex).setFurColor(sc.next());
-                    }
-                    case 4 -> {
-                        Dog.listDogs.get(animalIndex).setBarksDistance(sc.nextInt());
-                    }
-                    case 5 -> {
-                        Dog.listDogs.get(animalIndex).setStrength(sc.nextInt());
-                    }
-                    case 6 -> {
-                        Dog.listDogs.get(animalIndex).setEyeColor(sc.next());
-                    }
-                }
+       switch (editChoice){
+           case 1 -> Animal.listaAnimais.get(animalIndex).setName(sc.next());
+           case 2 -> Animal.listaAnimais.get(animalIndex).setLikesToPlay(sc.next());
+           case 3 -> Animal.listaAnimais.get(animalIndex).setFurColor(sc.next());
+       }
+        if(type == 1){
+            switch (editChoice){
+                case 4 -> ((Dog) Animal.listaAnimais.get(animalIndex)).setBarksDistance(sc.nextInt());
+                case 5 -> ((Dog) Animal.listaAnimais.get(animalIndex)).setStrength(sc.nextInt());
+                case 6 -> ((Dog) Animal.listaAnimais.get(animalIndex)).setEyeColor(sc.next());
             }
-                case 2 -> {
-                switch (editChoice) {
-                    case 1 -> {
-                        Cat.listCats.get(animalIndex).setName(sc.next());
-                    }
-                    case 2 -> {
-                        Cat.listCats.get(animalIndex).setLikesToPlay(sc.next());
-                    }
-                    case 3 -> {
-                        Cat.listCats.get(animalIndex).setFurColor(sc.next());
-                    }
-                    case 4 -> {
-                        Cat.listCats.get(animalIndex).setHoursSleeping(sc.nextInt());
-                    }
-                    case 5 -> {
-                        int choose;
-                        do {
-                            System.out.print("Does the cat have nails? (1 - yes) (2 - no): ");
-                            choose = sc.nextInt();
-                            switch (choose) {
-                                case 1 -> {
-                                    Cat.listCats.get(animalIndex).setHaveNail(true);
-                                }
-                                case 2 -> {
-                                    Cat.listCats.get(animalIndex).setHaveNail(false);
-                                }
-                            }
-                        } while (choose != 1 && choose != 2);
-                    }
-                    case 6 -> {
-                        Cat.listCats.get(animalIndex).setFoodLikes(sc.next());
+        } else {
+            switch (editChoice){
+                case 4 -> ((Cat) Animal.listaAnimais.get(animalIndex)).setHoursSleeping(sc.nextInt());
+                case 5 -> {
+                    System.out.print("Does the cat have nails? 1 - y, 2 - n: ");
+                    if(sc.nextInt() == 1){
+                        ((Cat) Animal.listaAnimais.get(animalIndex)).setHaveNail((true));
+                    } else {
+                        ((Cat) Animal.listaAnimais.get(animalIndex)).setHaveNail((false));
                     }
                 }
+                case 6 -> ((Cat) Animal.listaAnimais.get(animalIndex)).setFoodLikes(sc.next());
             }
         }
     }
@@ -201,20 +149,9 @@ public class PetShop {
     private static int getAnimalIndex(int animalType){
         System.out.print("\nInsert animal's code: ");
         int animalCode = sc.nextInt();
-        switch (animalType){
-            case 1 -> {
-                for(int i = 0; i < Dog.listDogs.size(); i++){
-                    if(Dog.listDogs.get(i).getCodigo() == animalCode){
-                        return i;
-                    }
-                }
-            }
-            case 2 -> {
-                for(int i = 0; i < Cat.listCats.size(); i++){
-                    if(Cat.listCats.get(i).getCodigo() == animalCode){
-                        return i;
-                    }
-                }
+        for (int i = 0; i < Animal.listaAnimais.size(); i++){
+            if(Animal.listaAnimais.get(i).getCodigo() == animalCode){
+                return i;
             }
         }
         return -1;
@@ -222,18 +159,8 @@ public class PetShop {
 
     // Registers
     private static void registerAnimal(){
-        Animal animal = collectAnimalData();
         int animalChosen = getType("--- Register ---");
-        switch (animalChosen){
-            case 1 -> {
-                Dog dog = collectDogsData(animal);
-                Dog.listDogs.add(dog);
-            }
-            case 2 -> {
-                Cat cat = collectCatsData(animal);
-                Cat.listCats.add(cat);
-            }
-        }
+        Animal.listaAnimais.add(collectAnimalData(animalChosen));
     }
 
     // List animals
@@ -241,69 +168,61 @@ public class PetShop {
         int animalChosen = getType("--- List ---");
         switch (animalChosen){
             case 1-> {
-                Dog.listDogs.forEach(dog -> { System.out.println(dog.toString()); });
+                Animal.listaAnimais.forEach(animal -> {
+                    if(animal instanceof Dog){
+                        System.out.println(animal);
+                    }
+                });
             }
             case 2-> {
-                Cat.listCats.forEach(cat -> { System.out.println(cat.toString()); });
+                Animal.listaAnimais.forEach(animal -> {
+                    if(animal instanceof Cat){
+                        System.out.println(animal);
+                    }
+                });
             }
         }
     }
 
     //Data collects
-    private static Animal collectAnimalData(){
+    private static Animal collectAnimalData(int type){
         Animal animal = new Animal();
         System.out.print("Insert the following datas: " +
                 "\nAnimal ID: ");
-        animal.setCodigo(sc.nextInt());
+        int id = sc.nextInt();
         System.out.print("Name: ");
-        animal.setName(sc.next());
+        String nome = sc.next();
         System.out.print("Likes to play with: ");
-        animal.setLikesToPlay(sc.next());
+        String likesToPlay = sc.next();
         System.out.print("Fur color: ");
-        animal.setFurColor(sc.next());
-        return animal;
+        String furColor = sc.next();
 
-    };
-    private static Dog collectDogsData(Animal animal){
-        Dog dog = new Dog();
-        System.out.print("Bark distance (meters): ");
-        dog.setBarksDistance(sc.nextInt());
-        System.out.print("Strength (0-10): ");
-        dog.setStrength(sc.nextInt());
-        System.out.print("Eye color: ");
-        dog.setEyeColor(sc.next());
-        dog.setCodigo(animal.getCodigo());
-        dog.setName(animal.getName());
-        dog.setLikesToPlay(animal.getLikesToPlay());
-        dog.setFurColor(animal.getFurColor());
-        return dog;
-    };
-    private static Cat collectCatsData(Animal animal){
-        Cat cat = new Cat();
-        System.out.print("Hours sleeping in a day: ");
-        cat.setHoursSleeping(sc.nextInt());
-        int choose;
-        do {
-            System.out.print("Does the cat have nails? (1 - yes) (2 - no): ");
-            choose = sc.nextInt();
-            switch (choose) {
-                case 1 -> {
-                    cat.setHaveNail(true);
-                }
-                case 2 -> {
-                    cat.setHaveNail(false);
-                }
-            }
-        } while (choose != 1 && choose != 2);
-        System.out.print("Insert the cat's favorite food: ");
-        cat.setFoodLikes(sc.next());
-        cat.setCodigo(animal.getCodigo());
-        cat.setName(animal.getName());
-        cat.setLikesToPlay(animal.getLikesToPlay());
-        cat.setFurColor(animal.getFurColor());
-        return cat;
-    };
+        if(type == 1){
+            System.out.print("Bark distance (meters): ");
+            int barksDistance = sc.nextInt();
+            System.out.print("Strength (0-10): ");
+            int strength = sc.nextInt();
+            System.out.print("Eye color: ");
+            String eyeColor = sc.next();
+            return new Dog(id, nome, likesToPlay, furColor, barksDistance, strength, eyeColor);
 
+        } else {
+            System.out.print("Hours sleeping in a day: ");
+            int hoursSleeping = sc.nextInt();
+            int choose;
+            boolean bChoose = false;
+            do {
+                System.out.print("Does the cat have nails? (1 - yes) (2 - no): ");
+                choose = sc.nextInt();
+                if (choose == 1) {
+                    bChoose = true;
+                }
+            } while (choose != 1 && choose != 2);
+            System.out.print("Insert the cat's favorite food: ");
+            String favoriteFood = sc.next();
+            return new Cat(id, nome, likesToPlay, furColor, hoursSleeping, bChoose, favoriteFood);
+        }
+    };
 
     //GetType (cat/dog)
     private static int getType(String title){

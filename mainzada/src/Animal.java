@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+
 public class Animal {
     private String name, likesToPlay, furColor;
     private int codigo;
     public Animal(){
 
     }
+
+    static ArrayList<Animal> listaAnimais = new ArrayList<Animal>();
 
     public Animal(int codigo, String name, String likesToPlay, String furColor) {
         this.codigo = codigo;
